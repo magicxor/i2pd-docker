@@ -8,7 +8,7 @@ env:
   DOCKER_IMAGE_PATH: ${{ secrets.DOCKERHUB_USERNAME }}/i2pd-docker
 
 jobs:
-  path-context:
+  docker_image_deploy:
     runs-on: ubuntu-20.04
     steps:
       -
