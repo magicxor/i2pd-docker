@@ -14,15 +14,24 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+
       -
         name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - 
+        name: Set variables
+        id: set-var
+        run: |
+          echo ::set-output name=DOCKER_IMAGE_TAG::${GITHUB_REF##*/}
+
       -
         name: Build and push
         uses: docker/build-push-action@v2
@@ -32,4 +41,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ${{ env.DOCKER_IMAGE_PATH }}:${GITHUB_REF##*/}
+            ${{ env.DOCKER_IMAGE_PATH }}:${{ steps.set-var.outputs.DOCKER_IMAGE_TAG }}
